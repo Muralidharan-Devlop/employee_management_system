@@ -1,0 +1,56 @@
+import sqlite3
+
+# Function to add a new employee
+def add_employee(name, position, salary):
+    conn = sqlite3.connect('employee.db')
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO employees (name, position, salary) VALUES (?, ?, ?)', (name, position, salary))
+    conn.commit()
+    conn.close()
+
+# Function to view all employees
+def view_employees():
+    conn = sqlite3.connect('employee.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM employees')
+    employees = cursor.fetchall()
+    conn.close()
+    return employees
+
+# Function to update employee information
+def update_employee(employee_id, name, position, salary):
+    conn = sqlite3.connect('employee.db')
+    cursor = conn.cursor()
+    cursor.execute('UPDATE employees SET name=?, position=?, salary=? WHERE id=?', (name, position, salary, employee_id))
+    conn.commit()
+    conn.close()
+
+# Function to delete an employee
+def delete_employee(employee_id):
+    conn = sqlite3.connect('employee.db')
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM employees WHERE id=?', (employee_id,))
+    conn.commit()
+    conn.close()
+
+# Example usage
+# Add a new employee
+add_employee('John Doe', 'Manager', 50000.0)
+
+# View all employees
+print("Employees:")
+print(view_employees())
+
+# Update employee information
+update_employee(1, 'John Smith', 'Senior Manager', 60000.0)
+
+# View all employees after update
+print("Employees after update:")
+print(view_employees())
+
+# Delete an employee
+delete_employee(1)
+
+# View all employees after deletion
+print("Employees after deletion:")
+print(view_employees())
